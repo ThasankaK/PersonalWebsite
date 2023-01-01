@@ -1,0 +1,8 @@
+@font-face {
+    font-family:'aleo.light';
+    src: url(fonts/aleo.light.otf);
+}
+
+body {
+    font-family: 'aleo.light'
+}
