@@ -1,8 +1,10 @@
 @font-face {
+    src: url(fonts/AleoLight.otf) format('opentype');
     font-family:'AleoLight';
-    src: url(fonts/AleoLight.otf);
 }
 
 body {
-    font-family: 'AleoLight'
+    font-size: 50px;
+    line-height: 62px;
+    font-family: 'AleoLight';
 }
