@@ -1,10 +1,9 @@
 @font-face {
-    src: url(fonts/AleoLight.otf) format('opentype');
-    font-family:'AleoLight';
+    font-family:CaviarDreams;
+    src: url(fonts/CaviarDreams.ttf) format('truetype');
+    
 }
 
 body {
-    font-size: 50px;
-    line-height: 62px;
-    font-family: 'AleoLight';
+    font-family: AleoLight;
 }
