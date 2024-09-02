@@ -3,6 +3,7 @@ new Vue({
     data: {
         name: 'Thasanka Kandage',
         email: 'thasanka.kandage@gmail.com',
+        instagramUrl: 'https://www.instagram.com/thasanka_k/',
         githubUrl: 'https://github.com/ThasankaK',
         linkedinUrl: 'https://www.linkedin.com/in/thasanka-kandage-489534236/',
         kaggleUrl: 'https://www.kaggle.com/thasankakandage',
