@@ -49,7 +49,8 @@ function createLine() {
     document.getElementById('app').appendChild(line);
 
     // lines start above viewport
-    line.style.transform = 'translateY(-100vh)'; 
+    line.style.transform = 'translateY(-200vh)'; 
+
 
 
 }
@@ -58,3 +59,7 @@ function createLine() {
 for (let i = 0; i < numberOfLines; i++) {
     createLine();
 }
+// adding bottom horizontal line
+const horizontalLine = document.createElement('div');
+horizontalLine.classList.add('horizontal-line');
+document.getElementById('app').appendChild(horizontalLine);
