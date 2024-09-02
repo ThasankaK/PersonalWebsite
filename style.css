@@ -15,7 +15,10 @@ body, h1{
 
 
 body {
-    background-color: #121212;
+    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
+    background-size: 200% 200%;
+    transition: background 0.5s ease;
+    
     color: #ffffff; 
     font-size: 16px;
     line-height: 1.6;
@@ -27,6 +30,7 @@ body {
     min-height: 100vh;
 }
 
+
 header {
     text-align: center;
     margin-bottom: 50px;
@@ -37,7 +41,7 @@ h1 {
     font-size: 3.5em;
     margin-bottom: 20px;
     font-weight: 700;
-    color: #1abc9c; /* turquoise */
+    color: #000000; 
     letter-spacing: 3px;
 }
 
@@ -47,7 +51,7 @@ h1 {
 
 
 .social-links a {
-    color: #1abc9c; 
+    color: #000000; 
     font-size: 2em;
     margin: 0 15px;
     /* transition effect over 0.3s */ 
@@ -99,7 +103,7 @@ h1 {
 .project h2 {
     margin-top: 15px;
     font-size: 1.8em;
-    color: #1abc9c;
+    color: #000000;
 }
 
 
