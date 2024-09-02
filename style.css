@@ -7,62 +7,54 @@
 }
 
 /* applying fonts, margin and padding */
-body, h1{
+body, h1 {
     margin: 0;
     padding: 0;
     font-family: 'CustomFont', sans-serif; 
 }
 
-
 body {
-    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
-    background-size: 200% 200%;
-    transition: background 0.5s ease;
-    
+    background-color: #000000;
     color: #ffffff; 
     font-size: 16px;
     line-height: 1.6;
     padding: 0 20px;
-    display: flex; /* arranging child elements */
-    flex-direction: column; /* arranges vertically */ 
-    align-items: center; /* arranges center horizontally */ 
-    justify-content: center; /* arranges center vertically */ 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
-
 
 header {
     text-align: center;
     margin-bottom: 50px;
 }
 
-
 h1 {
     font-size: 3.5em;
     margin-bottom: 20px;
     font-weight: 700;
-    color: #000000; 
+    color: #ffffff; 
     letter-spacing: 3px;
 }
 
-
-
-
-
-
 .social-links a {
-    color: #000000; 
+    color: #ffffff; 
     font-size: 2em;
     margin: 0 15px;
-    /* transition effect over 0.3s */ 
     transition: color 0.3s, transform 0.3s;
+    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .social-links a:hover {
     color: #ffffff; 
+    -webkit-text-fill-color: #ffffff; /* text color white when hovered */
 }
-
-
 
 .projects {
     display: flex;
@@ -70,8 +62,6 @@ h1 {
     justify-content: center;
     gap: 40px;
 }
-
-
 
 .overlay {
     position: absolute;
@@ -103,15 +93,13 @@ h1 {
 .project h2 {
     margin-top: 15px;
     font-size: 1.8em;
-    color: #000000;
+    color: #ffffff;
 }
-
 
 .project-image-container {
     position: relative;
     overflow: hidden;
     border-radius: 15px;
-    /* fixed size for images, 'ease' smooths the transition */
     width: 300px; 
     height: 200px;
     transition: transform 0.3s ease;
@@ -123,4 +111,29 @@ h1 {
     object-fit: cover; 
     border-radius: 15px;
     transition: transform 0.3s ease;
+}
+
+
+
+.glowing-line {
+    position: absolute;
+    /* size of line */ 
+    width: 1px; 
+    height: 10vh;
+
+    background: linear-gradient(0deg, #1abc9c, #ff007f, #f5a623);
+    opacity: 1;
+    animation: moveLines 4s cubic-bezier(0.7, 0, 0.3, 1) infinite; /* acceleration into slow-down */
+    animation-delay: var(--delay); /* animation delay */
+    z-index: -1; 
+    will-change: transform;
+}
+
+@keyframes moveLines {
+    0% {
+        transform: translateY(-100vh); /* starting part of the viewport */
+    }
+    100% {
+        transform: translateY(20vh); /* ending part of the viewport */
+    }
 }
