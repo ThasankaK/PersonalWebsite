@@ -27,20 +27,34 @@ new Vue({
     }
 });
 
-// moving linear gradient of turquoise, pink, yellow
-document.addEventListener('mousemove', (e) => {
-  
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+const numberOfLines = 15;
+
+function createLine() {
+    // create a new line element
+    const line = document.createElement('div');
+    line.classList.add('glowing-line');
+    // setting line size explicitly, ran into an issue of different line sizes
+    line.style.width = '1px'; 
+    line.style.height = '10vh'; 
     
-    // cursor position out of total space in % 
-    const x = e.clientX / width * 100;
-    const y = e.clientY / height * 100;
-    
-    // gradient background based on cursor position
-    document.body.style.background = `linear-gradient(135deg, #1abc9c, #ff007f, #f5a623)`;
-    document.body.style.backgroundPosition = `${x}% ${y}%`;
-    document.body.style.backgroundSize = '200% 200%';
-});
+    // line will start randomly
+    const randomPos = Math.random() * 100;
+    line.style.left = `${randomPos}%`;
+
+    // start the animation at different times
+    const randomDelay = Math.random() * 10; // 0 to 10 seconds
+    line.style.setProperty('--delay', `${randomDelay}s`);
+
+    // add line to html
+    document.getElementById('app').appendChild(line);
+
+    // lines start above viewport
+    line.style.transform = 'translateY(-100vh)'; 
 
 
+}
+
+
+for (let i = 0; i < numberOfLines; i++) {
+    createLine();
+}
