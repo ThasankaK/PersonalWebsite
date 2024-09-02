@@ -25,3 +25,21 @@ new Vue({
         ]
     }
 });
+
+// moving linear gradient of turquoise, pink, yellow
+document.addEventListener('mousemove', (e) => {
+  
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // cursor position out of total space in % 
+    const x = e.clientX / width * 100;
+    const y = e.clientY / height * 100;
+    
+    // gradient background based on cursor position
+    document.body.style.background = `linear-gradient(135deg, #1abc9c, #ff007f, #f5a623)`;
+    document.body.style.backgroundPosition = `${x}% ${y}%`;
+    document.body.style.backgroundSize = '200% 200%';
+});
+
+
