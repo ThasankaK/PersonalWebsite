@@ -32,10 +32,8 @@ const numberOfLines = 15;
 function createLine() {
     // create a new line element
     const line = document.createElement('div');
-    line.classList.add('glowing-line');
-    // setting line size explicitly, ran into an issue of different line sizes
-    line.style.width = '1px'; 
-    line.style.height = '10vh'; 
+    line.classList.add('vertical-line');
+
     
     // line will start randomly
     const randomPos = Math.random() * 100;
@@ -45,7 +43,7 @@ function createLine() {
     const randomDelay = Math.random() * 10; // 0 to 10 seconds
     line.style.setProperty('--delay', `${randomDelay}s`);
 
-    // add line to html
+    // adding line to html
     document.getElementById('app').appendChild(line);
 
     // lines start above viewport

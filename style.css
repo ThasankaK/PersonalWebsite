@@ -1,16 +1,10 @@
-/* custom fonts */
-@font-face {
-    font-family: 'CustomFont';
-    src: url('fonts/AleoLight.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
+
 
 /* applying fonts, margin and padding */
 body, h1 {
     margin: 0;
     padding: 0;
-    font-family: 'CustomFont', sans-serif; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 body {
@@ -24,7 +18,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow: auto;
     position: relative;
 }
 
@@ -51,6 +45,7 @@ h1 {
     -webkit-text-fill-color: transparent;
 }
 
+/* to change */
 .social-links a:hover {
     color: #ffffff; 
     -webkit-text-fill-color: #ffffff; /* text color white when hovered */
@@ -61,6 +56,8 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
+    width: 100%; /* width of the container */
+
 }
 
 .overlay {
@@ -99,12 +96,28 @@ h1 {
 .project-image-container {
     position: relative;
     overflow: hidden;
-    border-radius: 15px;
-    width: 300px; 
+    border-radius: 15px; /* rounded corners */
+    width: 300px;
     height: 200px;
     transition: transform 0.3s ease;
     z-index: 2;
+    padding: 5px; /* space between image and border */
 }
+
+.project-image-container::before {
+    content: "";
+    position: absolute;
+    /* border thickness */ 
+    top: -10px; 
+    left: -10px; 
+    right: -10px; 
+    bottom: -10px; 
+    border-radius: 15px;
+    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
+    z-index: -1; 
+}
+
+
 
 .project img {
     width: 100%;
@@ -112,38 +125,14 @@ h1 {
     object-fit: cover; 
     border-radius: 15px;
     transition: transform 0.3s ease;
+    max-width: 300px; /* maximum size */
 }
 
+/* need to fix lines falling past the line? and creating a scroll down area that shouldnt exist?
 
-
-.glowing-line {
-    position: absolute;
-    /* size of line */ 
-    width: 1px; 
-    height: 10vh;
-
-    background: linear-gradient(0deg, #1abc9c, #ff007f, #f5a623);
-    opacity: 1;
-    animation: moveLines 4s cubic-bezier(0.7, 0, 0.3, 1) infinite; /* acceleration into slow-down */
-    animation-delay: var(--delay); /* animation delay */
-    z-index: -1; 
-    will-change: transform;
-}
-
-@keyframes moveLines {
-    0% {
-        transform: translateY(-150vh); /* starting part of the viewport */
-    }
-    100% {
-        transform: translateY(50vh); /* ending part of the viewport */
-    }
-}
-
-
-
-
+/* horizontal line stays at the bottom of the viewport and stretches across the full width */
 .horizontal-line {
-    position: absolute;
+    position: fixed; 
     bottom: 0;
     left: 0;
     width: 100%;
@@ -152,7 +141,25 @@ h1 {
     z-index: 1;
 }
 
+/* vertical-line to end at the horizontal line */
+.vertical-line {
+    position: absolute;
+    width: 1px;
+    height: 10vh; 
+    background: linear-gradient(0deg, #1abc9c, #ff007f, #f5a623);
+    opacity: 1;
+    animation: moveLines 4s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+    animation-delay: var(--delay);
+    z-index: -1;
+    will-change: transform;
+}
 
-
-
+@keyframes moveLines {
+    0% {
+        transform: translateY(-200vh); /* starting above the viewport */
+    }
+    100% {
+        transform: translateY(calc(100vh - 10px)); /* ending above the horizontal line */
+    }
+}
 
