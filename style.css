@@ -1,6 +1,4 @@
-@font-face {
-    font-family: 'MyCustomFont';
-}
+
 
 /* applying fonts, margin and padding */
 body, h1 {
@@ -37,21 +35,81 @@ h1 {
     letter-spacing: 3px;
 }
 
+/* container for social links and toggle button */
+.social-links-container {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+
+.social-links {
+    display: flex; /* show by default */
+    flex-direction: column; /* arrange links vertically */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute; 
+    right: 0; 
+    transform: translateY(-50%); /* vertical centering */
+    transition: opacity 0.3s ease, right 0.5s ease; 
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 2em;
+    cursor: pointer;
+    position: absolute;
+    transform: translateY(-50%); /* vertical centering */
+    right: 50px; /* left of the social links */
+    z-index: 1001; 
+    transition: right 0.5s ease; 
+}
+
+.social-links.open {
+    right: 0; /* sliding out of screen from the right */
+}
+
+/* when hiding social links */
+.social-links.hidden {
+    right: -200px; /* sliding out of screen to the right */
+
+}
+
+.toggle-btn.left {
+    right: 0px; /* moving to the left when closed */
+}
+
+
+
+
+
 .social-links a {
     color: #ffffff; 
     font-size: 2em;
-    margin: 0 15px;
     transition: color 0.3s, transform 0.3s;
     background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* to change */
 .social-links a:hover {
     color: #ffffff; 
-    -webkit-text-fill-color: #ffffff; /* text color white when hovered */
+    -webkit-text-fill-color: #ffffff;
 }
+
+
+
+
+
+
+
 
 .projects {
     display: flex;
@@ -59,7 +117,6 @@ h1 {
     justify-content: center;
     gap: 40px;
     width: 100%; /* width of the container */
-
 }
 
 .overlay {
@@ -89,10 +146,17 @@ h1 {
     text-align: center;
 }
 
+.project {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; /* title stays at the bottom */
+    width: 300px; /* same width as container */
+    height: auto;
+}
+
 .project h2 {
-    margin-top: 15px;
-    font-size: 1.8em;
-    color: #ffffff;
+    text-align: center; /* centering  title text */
 }
 
 .project-image-container {
@@ -101,7 +165,7 @@ h1 {
     border-radius: 15px; /* rounded corners */
     width: 300px;
     height: 200px;
-    transition: transform 0.3s ease;
+
     z-index: 2;
     padding: 5px; /* space between image and border */
 }
@@ -119,8 +183,6 @@ h1 {
     z-index: -1; 
 }
 
-
-
 .project img {
     width: 100%;
     height: 100%;
@@ -130,7 +192,11 @@ h1 {
     max-width: 300px; /* maximum size */
 }
 
-/* need to fix lines falling past the line? and creating a scroll down area that shouldnt exist?
+
+
+
+
+
 
 /* horizontal line stays at the bottom of the viewport and stretches across the full width */
 .horizontal-line {
@@ -140,7 +206,7 @@ h1 {
     width: 100%;
     height: 10px;
     background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
-    z-index: 1;
+    z-index: 9999999999999;
 }
 
 /* vertical-line to end at the horizontal line */
@@ -164,4 +230,6 @@ h1 {
         transform: translateY(calc(100vh - 10px)); /* ending above the horizontal line */
     }
 }
+
+
 
