@@ -6,10 +6,8 @@
     <title>Thasanka Kandage</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- icons to use without having to add them as image files, fab fa-X or fa fa-X -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
-
-
+    <!-- Font Awesome script tag for icons -->
+    <script src="https://kit.fontawesome.com/a36eea86ba.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -18,12 +16,12 @@
         <header>
             <h1>{{ name }}</h1>
             <div class="social-links">
-                <a :href="instagramUrl" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a :href="githubUrl" target="_blank"><i class="fab fa-github"></i></a>
+                <a :href="instagramUrl" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a :href="githubUrl" target="_blank"><i class="fa-brands fa-github"></i></a>
                 
-                <a :href="linkedinUrl" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a :href="kaggleUrl" target="_blank"><i class="fab fa-kaggle"></i></a>
-                <a :href="`mailto:${email}`" target="_blank"><i class="fa fa-envelope"></i></a>
+                <a :href="linkedinUrl" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a :href="kaggleUrl" target="_blank"><i class="fa-brands fa-kaggle"></i></a>
+                <a :href="`mailto:${email}`" target="_blank"><i class="fa-solid fa-envelope"></i></a>
             </div>
         </header>
         
@@ -44,7 +42,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="scripts.js"></script>
-
-
 </body>
 </html>
