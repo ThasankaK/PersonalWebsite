@@ -61,3 +61,35 @@ for (let i = 0; i < numberOfLines; i++) {
 const horizontalLine = document.createElement('div');
 horizontalLine.classList.add('horizontal-line');
 document.getElementById('app').appendChild(horizontalLine);
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('toggle-btn');
+    const socialLinks = document.querySelector('.social-links');
+
+    // ensuring social links are visible initially
+    socialLinks.classList.remove('hidden');
+    toggleBtn.querySelector('i').classList.replace('lni-angle-double-left', 'lni-angle-double-right');
+
+    toggleBtn.addEventListener('click', () => {
+        // toggling 'hidden' class to show/hide social links
+        socialLinks.classList.toggle('hidden');
+    
+
+        // Update the icon based on the state
+        if (socialLinks.classList.contains('hidden')) {
+
+            // will add rotating after instead of diff images
+            toggleBtn.querySelector('i').classList.replace('lni-angle-double-right', 'lni-angle-double-left');
+            // moving to left
+            toggleBtn.classList.add('left');
+        } else {
+            toggleBtn.querySelector('i').classList.replace('lni-angle-double-left', 'lni-angle-double-right');
+            // moving back to og position
+            toggleBtn.classList.remove('left');
+        }
+    });
+});
+
+
