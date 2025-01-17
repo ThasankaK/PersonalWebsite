@@ -1,235 +1,338 @@
 
-
-/* applying fonts, margin and padding */
-body, h1 {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+body,
+h1 {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-    background-color: #000000;
-    color: #ffffff; 
-    font-size: 16px;
-    line-height: 1.6;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    overflow: auto;
-    position: relative;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: auto;
+  position: relative;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 50px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 h1 {
-    font-size: 3.5em;
-    margin-bottom: 20px;
-    font-weight: 700;
-    color: #ffffff; 
-    letter-spacing: 3px;
+  font-size: 3.5em;
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 3px;
 }
 
 /* container for social links and toggle button */
 .social-links-container {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
 }
 
+/* social links */
 .social-links {
-    display: flex; /* show by default */
-    flex-direction: column; /* arrange links vertically */
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 10px;
-    position: absolute; 
-    right: 0; 
-    transform: translateY(-50%); /* vertical centering */
-    transition: opacity 0.3s ease, right 0.5s ease; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border-radius: 10px 0 0 10px;
+  transition: transform 0.3s ease;
 }
 
-.toggle-btn {
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 2em;
-    cursor: pointer;
-    position: absolute;
-    transform: translateY(-50%); /* vertical centering */
-    right: 50px; /* left of the social links */
-    z-index: 1001; 
-    transition: right 0.5s ease; 
-}
-
-.social-links.open {
-    right: 0; /* sliding out of screen from the right */
-}
-
-/* when hiding social links */
 .social-links.hidden {
-    right: -200px; /* sliding out of screen to the right */
-
+  transform: translateX(100%);
 }
 
-.toggle-btn.left {
-    right: 0px; /* moving to the left when closed */
+/* in and out togle button*/
+.toggle-button {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(26, 188, 156, 0.8);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 10px 0 0 10px;
+  transition: background 0.3s ease;
 }
 
+.toggle-button:hover {
+  background: rgba(26, 188, 156, 1);
+}
 
+.toggle-button i {
+  color: white;
+  font-size: 20px;
+}
 
+.toggle-button.left {
+  right: 0px; /* move button to the left when links hidden */
+}
 
-
+/* link styles */
 .social-links a {
-    color: #ffffff; 
-    font-size: 2em;
-    transition: color 0.3s, transform 0.3s;
-    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  color: #1ABC9C;
+  font-size: 2em;
+  transition: color 0.3s, transform 0.3s;
+  background: #1ABC9C;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .social-links a:hover {
-    color: #ffffff; 
-    -webkit-text-fill-color: #ffffff;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
-
-
-
-
-
-
-
+/* projects  */
 .projects {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    width: 100%; /* width of the container */
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.project-image-container:hover .overlay {
-    opacity: 1;
-}
-
-.overlay-text {
-    color: #ffffff; 
-    font-size: 1.5em;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.project {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end; /* title stays at the bottom */
-    width: 300px; /* same width as container */
-    height: auto;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+.project {
+    width: 100%;
+    padding: 15px 25px;
+    border: 2px solid #1ABC9C;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.project:hover {
+    background: rgba(26, 188, 156, 0.1);
+    transform: translateX(10px);
 }
 
 .project h2 {
-    text-align: center; /* centering  title text */
+    font-size: 1.5em;
+    margin: 0;
+    color: #1ABC9C;
 }
 
-.project-image-container {
-    position: relative;
-    overflow: hidden;
-    border-radius: 15px; /* rounded corners */
-    width: 300px;
-    height: 200px;
-
-    z-index: 2;
-    padding: 5px; /* space between image and border */
-}
-
-.project-image-container::before {
-    content: "";
-    position: absolute;
-    /* border thickness */ 
-    top: -10px; 
-    left: -10px; 
-    right: -10px; 
-    bottom: -10px; 
-    border-radius: 15px;
-    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
-    z-index: -1; 
-}
-
-.project img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    border-radius: 15px;
-    transition: transform 0.3s ease;
-    max-width: 300px; /* maximum size */
-}
-
-
-
-
-
-
-
-/* horizontal line stays at the bottom of the viewport and stretches across the full width */
+/* horizontal line at bottom of viewport this no work rn maybe add later*/
 .horizontal-line {
-    position: fixed; 
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(135deg, #1abc9c, #ff007f, #f5a623);
-    z-index: 9999999999999;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: #1ABC9C;
+  z-index: 9999999999999;
 }
 
-/* vertical-line to end at the horizontal line */
+/* vertical lines animation */
 .vertical-line {
-    position: absolute;
-    width: 1px;
-    height: 10vh; 
-    background: linear-gradient(0deg, #1abc9c, #ff007f, #f5a623);
-    opacity: 1;
-    animation: moveLines 4s cubic-bezier(0.7, 0, 0.3, 1) infinite;
-    animation-delay: var(--delay);
-    z-index: -1;
-    will-change: transform;
+  position: absolute;
+  width: 2px;
+  height: 15vh;
+  background: #1ABC9C;
+  opacity: 0.7;
+  animation: moveLines 4s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+  animation-delay: var(--delay);
+  z-index: -1;
+  will-change: transform;
+}
+
+
+/* splash particle */
+.splash-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #1ABC9C;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
 }
 
 @keyframes moveLines {
     0% {
-        transform: translateY(-200vh); /* starting above the viewport */
-    }
-    100% {
-        transform: translateY(calc(100vh - 10px)); /* ending above the horizontal line */
-    }
+        transform: translateY(-200vh);
+        }
+ 
+  95% {
+    transform: translateY(calc(100vh - 10px));
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(calc(100vh - 10px));
+    opacity: 0;
+  }
+}
+
+@keyframes splash {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* about me */
+.about-me {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    padding: 20px;
+    
+}
+
+.profile-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #1ABC9C;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+    transform: scale(1.05);
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h2 {
+    color: #1ABC9C;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.about-content p {
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
 
 
 
+.resume-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #1ABC9C;
+    text-decoration: none;
+    border: 2px solid #1ABC9C;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    font-size: 1em;
+}
+
+.resume-link:hover {
+    background: rgba(26, 188, 156, 0.1);
+    transform: translateX(10px);
+}
+
+
+.project a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    display: block;
+}
+
+.social-links a {
+    color: #1ABC9C; 
+    font-size: 2em;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.resume-link {
+    color: #1ABC9C;
+}
+
+/* mobile stuff */
+@media (max-width: 768px) {
+
+    .about-me {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+    }
+    .social-links-container {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        transform: none;
+        z-index: 1000;
+    }
+
+    .social-links {
+        flex-direction: row;
+        border-radius: 10px;
+        padding: 8px;
+        gap: 12px;
+    }
+
+    .social-links a {
+        font-size: 1.5em;
+    }
+
+    .toggle-button {
+        top: -35px;
+        padding: 8px;
+    }
+
+    .social-links.hidden {
+        transform: translateY(150%);
+    }
+
+    .toggle-button {
+        left: auto;
+        right: 0;
+        top: -40px;
+        transform: none;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .toggle-button i {
+        transform: rotate(90deg);
+    }
+
+    .toggle-button.left i {
+        transform: rotate(-90deg);
+    }
+}
