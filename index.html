@@ -17,20 +17,29 @@
         <header>
             <h1>{{ name }}</h1>
             <div class="social-links-container">
-                <button class="toggle-btn" id="toggle-btn">
-                    <i class="lni lni-angle-double-right"></i> <!-- initial icon, going to change this to just rotate-->
+                <button class="toggle-button" id="toggle-button">
+                    <i class="lni lni-angle-double-left"></i> <!-- ths looks pre bad def going to change htis-->
                 </button>
             <div class="social-links">
-              
-                <a :href="instagramUrl" target="_blank"><i class="lni lni-instagram-original"></i></a>
                 <a :href="githubUrl" target="_blank"><i class="lni lni-github-original"></i></a>
                 <a :href="linkedinUrl" target="_blank"><i class="lni lni-linkedin-original"></i></a>
-                <a :href="kaggleUrl" target="_blank"><i class="lab la-kaggle"></i></a>
+                <a :href="kaggleUrl" target="_blank"><i class="lab la-kaggle"></i></a> <!--this kaggle one is small and diff than others, sohuld change but not important rn-->
                 <a :href="`mailto:${email}`" target="_blank"><i class="lni lni-envelope"></i></a>
+                <a :href="instagramUrl" target="_blank"><i class="lni lni-instagram-original"></i></a>
             </div>
         </div>
 
-
+        <!-- about me -->
+        <section class="about-me">
+            <img src="images/pfp.jpg" alt="Profile Picture" class="profile-pic">
+            <div class="about-content">
+                <h2>About Me</h2>
+                <p v-html="aboutMe"></p>
+                <a :href="resumeUrl" target="_blank" class="resume-link">
+                    <i class="lni lni-download"></i> View Resume
+                </a>
+            </div>
+        </section>
 
         </header>
         
@@ -38,16 +47,11 @@
         <section class="projects">
             <div class="project" v-for="project in projects" :key="project.name">
                 <a :href="project.link" target="_blank">
-                    <div class="project-image-container">
-                        <img :src="project.image" :alt="project.name">
-                        <div class="overlay">
-                            <div class="overlay-text">View</div>
-                        </div>
-                    </div>
+                    <h2>{{ project.name }}</h2>
                 </a>
-                <h2>{{ project.name }}</h2>
             </div>
         </section>
+        
 
     </div>
 
