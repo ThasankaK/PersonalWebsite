@@ -180,11 +180,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleButton.addEventListener("click", () => {
         socialLinks.classList.toggle("hidden");
-    
         if (socialLinks.classList.contains("hidden")) {
             toggleButton.querySelector("i").classList.replace("lni-angle-double-right", "lni-angle-double-left");
             toggleButton.classList.add("left");
-        } else {
+        } 
+        else {
             toggleButton.querySelector("i").classList.replace("lni-angle-double-left", "lni-angle-double-right");
             toggleButton.classList.remove("left");
         }
