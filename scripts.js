@@ -102,7 +102,7 @@ function initializeCanvas() {
             this.x = Math.random() * canvas.width;
             this.y = -100;
             this.length = Math.random() * 20 + 20;
-            this.speed = Math.random() * 0.5 + 2;
+            this.speed = Math.random() * 0.5 + 5;
             this.width = Math.random() * 1 + 0.2;
             this.particles = [];
             this.splashed = false;
