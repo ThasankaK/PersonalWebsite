@@ -3,92 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sudoku solver — Thasanka Kandage</title>
-<meta name="description" content="Upload a photo of a Sudoku puzzle. A CNN reads the digits and backtracking solves it, entirely in your browser.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  :root {
-    --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --ink: #111111; --mid: #3d3d3d; --soft: #6d6d6d; --rule: #dcdcdc;
-    --ok: #1c6b3f; --bad: #b03030;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0 auto; padding: 0 1.5rem 5rem; max-width: 64rem;
-    background: #fff; color: var(--ink); font-family: var(--font);
-    font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; }
-  h1 { margin: 3rem 0 .4rem; font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em; }
-  .lede { margin: 0 0 2rem; color: var(--mid); max-width: 46rem; }
-  h2 {
-    margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 2px solid var(--ink);
-    font-size: .8rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-  }
-  .back { font-size: .85rem; color: var(--soft); text-decoration: none; }
-  .back:hover { color: var(--ink); }
-
-  /* ── controls ─────────────────────────────────────────── */
-  .controls { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: 1rem; }
-  button, .filebtn {
-    font: inherit; font-size: .88rem; padding: .45rem .9rem; cursor: pointer;
-    background: #fff; color: var(--ink); border: 1px solid var(--ink); border-radius: 2px;
-  }
-  button:hover, .filebtn:hover { background: var(--ink); color: #fff; }
-  button[disabled] { opacity: .35; cursor: default; }
-  button[disabled]:hover { background: #fff; color: var(--ink); }
-  input[type=file] { display: none; }
-
-  .status { margin: 0 0 1.5rem; font-size: .85rem; color: var(--soft); min-height: 1.4em; }
-  .status.err { color: var(--bad); }
-
-  /* ── the working area ─────────────────────────────────── */
-  .panes { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 2rem; }
-  figure { margin: 0; }
-  figcaption { margin-top: .4rem; font-size: .78rem; color: var(--soft); }
-  canvas { display: block; width: 100%; max-width: 27rem; border: 1px solid var(--rule); background: #fafafa; }
-  canvas.hidden, .hidden { display: none; }
-
-  /* ── editable grid ────────────────────────────────────── */
-  .grid { display: grid; grid-template-columns: repeat(9, 1fr); max-width: 27rem; border: 2px solid var(--ink); }
-  .grid input {
-    font: inherit; font-size: 1rem; text-align: center; width: 100%; aspect-ratio: 1;
-    border: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
-    background: #fff; color: var(--ink); padding: 0; min-width: 0;
-  }
-  .grid input:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
-  .grid input.low { background: #fff6e5; }         /* model wasn't confident */
-  .grid input.clash { background: #ffe9e9; color: var(--bad); font-weight: 600; }
-  .grid input:nth-child(9n+4), .grid input:nth-child(9n+7) { border-left: 2px solid var(--ink); }
-  .grid input:nth-child(n+19):nth-child(-n+27),
-  .grid input:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--ink); }
-
-  .legend { margin: .6rem 0 0; font-size: .78rem; color: var(--soft); }
-  .swatch { display: inline-block; width: .8em; height: .8em; vertical-align: -.05em; border: 1px solid var(--rule); margin-right: .25em; }
-  .swatch.low { background: #fff6e5; }
-  .swatch.clash { background: #ffe9e9; }
-
-  /* ── how it works ─────────────────────────────────────── */
-  ol.steps { margin: 0; padding-left: 1.2rem; max-width: 46rem; }
-  ol.steps li { margin-bottom: .5rem; color: var(--mid); font-size: .92rem; }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; }
-
-  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-size: .85rem; color: var(--soft); }
+  :root{--font:IBM Plex Sans,system-ui,-apple-system,"Segoe UI",sans-serif;--ink:#111;--soft:#6d6d6d;--rule:#dcdcdc}
+  *{box-sizing:border-box}
+  body{margin:0 auto;padding:1.5rem;max-width:64rem;background:#fff;color:var(--ink);font-family:IBM Plex Sans,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5}
+  a{color:inherit}
+  h1{margin:2rem 0 .5rem;font-size:1.25rem}
+  .lede{color:var(--soft);max-width:46rem}
+  .back{font-size:.9rem;color:var(--soft)}
+  .controls{display:flex;gap:.6rem;align-items:center;margin:1rem 0}
+  button,.filebtn{padding:.4rem .8rem;border:1px solid #111;background:#fff;cursor:pointer}
+  .panes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.5rem}
+  canvas{display:block;width:100%;max-width:27rem;border:1px solid var(--rule);background:#fafafa}
+  .grid{display:grid;grid-template-columns:repeat(9,1fr);max-width:27rem;border:1px solid var(--rule)}
+  .status{margin:0 0 1rem;color:var(--soft)}
+  ol.steps{margin:0;padding-left:1.1rem;max-width:46rem;color:var(--soft)}
+  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--soft)}
+  @media(max-width:840px){.grid{max-width:100%}}
 </style>
 </head>
 <body>
 
 <p><a class="back" href="index.html">← Thasanka Kandage</a></p>
 
-<h1>Sudoku solver</h1>
+<h1>AI Sudoku Solver</h1>
 <p class="lede">
   Upload a photo of a Sudoku puzzle. It finds the grid, reads the digits with a CNN I trained, and
-  solves the rest by backtracking. Everything runs in your browser — the image is never uploaded
-  anywhere. <a href="https://github.com/ThasankaK/AISudokuSolver">Source</a>.
+  solves the rest by backtracking. <a href="https://github.com/ThasankaK/AISudokuSolver">Source</a>.
 </p>
 
 <div class="controls">
@@ -97,37 +39,30 @@
   <button id="reset" disabled>Reset</button>
 </div>
 
-<p class="status" id="status">Choose a Sudoku image, then send it to the backend.</p>
+<p class="status" id="status">Choose a Sudoku image. Note that since I am using <a href="https://render.com/">Render</a>, it may take 1-2 minutes for my instance to spin up after inactivity.</p>
 
 <div class="panes">
   <figure>
     <canvas id="cvsSource" width="450" height="450"></canvas>
-    <figcaption id="capSource">Your image, with the detected grid outlined</figcaption>
+    <figcaption id="capSource">Your image.</figcaption>
   </figure>
 
   <figure>
     <canvas id="cvsWarp" width="450" height="450"></canvas>
     <figcaption id="capGrid">
-      The solved puzzle returned by the backend.
+      The solved puzzle.
     </figcaption>
   </figure>
 </div>
 
 <h2>How it works</h2>
 <ol class="steps">
-  <li>Grayscale, a 5×5 Gaussian blur, then an adaptive threshold (Gaussian, block 11, C 2) — the
-    same parameters as the Python version.</li>
-  <li>Find external contours, keep the largest four-sided one above 50px² using
-    <code>approxPolyDP</code> at 2% of the perimeter. That's the puzzle border.</li>
-  <li>Order those four corners by the sum and difference of their coordinates, then warp the
-    quadrilateral to a flat 450×450 square.</li>
-  <li>Split into 81 cells, trim 4px of border off each, resize to 32×32, normalize, and run all 81
-    through the CNN in one batch. Predictions under 20% confidence are treated as empty.</li>
-  <li>Check the read board for duplicate digits in any row, column, or box — a single misread
-    creates a contradiction, and it's better to point at it than to fail silently.</li>
-  <li>Solve by backtracking, capped at two million steps so a bad read can never hang the tab.</li>
-  <li>Draw the found digits onto the flat grid, warp them back through the inverse transform, and
-    blend over your original image.</li>
+  <li>We clean the photo so the puzzle is easy to see.</li>
+  <li>Finds the puzzle border and straightens the grid.</li>
+  <li>Each cell is extracted and the digit (if any) is read by the model.</li>
+  <li>Low-confidence reads are treated as empty so mistakes don't break the solve.</li>
+  <li>The solver fills in the missing numbers and stops if the puzzle is invalid.</li>
+  <li>The completed numbers are drawn back onto your photo.</li>
 </ol>
 
 <footer>
@@ -136,7 +71,6 @@
 
 <script>
 const SIZE = 450;
-// Update this URL after deploying to Render — e.g., "https://sudoku-api-xxxxx.onrender.com"
 const API_BASE = "https://personalwebsite-v4g4.onrender.com";
 
 const els = {
@@ -232,3 +166,23 @@ els.solve.addEventListener("click", solveWithBackend);
 </script>
 </body>
 </html>
+
+<script>
+document.querySelectorAll('a[href]').forEach(a => {
+  try {
+    const href = a.getAttribute('href');
+    if (!href) return;
+    if (href.startsWith('mailto:')) {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      return;
+    }
+    const url = new URL(href, location.href);
+    if (url.hostname !== location.hostname) {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    }
+  } catch (e) {
+  }
+});
+</script>

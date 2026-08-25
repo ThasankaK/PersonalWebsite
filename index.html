@@ -3,148 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thasanka Kandage — Software Engineer</title>
-<meta name="description" content="Computer engineering student at the University of Alberta, currently interning at Ericsson. Backend, infrastructure, and applied AI.">
 <link rel="canonical" href="https://tkandage.com/">
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tkandage.com/">
-<meta property="og:title" content="Thasanka Kandage — Software Engineer">
-<meta property="og:description" content="Computer engineering student at the University of Alberta, currently interning at Ericsson. Backend, infrastructure, and applied AI.">
-<meta property="og:image" content="https://tkandage.com/images/pfp.jpg">
-<meta name="twitter:card" content="summary_large_image">
-
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Crect x='5' y='7' width='22' height='2' fill='%23111'/%3E%3Crect x='5' y='15' width='22' height='2' fill='%23111'/%3E%3Crect x='5' y='23' width='13' height='2' fill='%23111'/%3E%3C/svg%3E">
-
-<!-- One font for the whole page. Swap this line and --font below to change it. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-  :root {
-    --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --ink:  #111111;   /* headings, body */
-    --mid:  #3d3d3d;   /* bullets, prose */
-    --soft: #6d6d6d;   /* dates, notes, labels */
-    --rule: #dcdcdc;   /* every hairline */
-  }
+* {
+  box-sizing: border-box;
+}
 
-  * { box-sizing: border-box; }
+body {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #111;
+  background: white;
+}
 
-  body {
-    margin: 0 auto;
-    padding: 0 1.5rem 5rem;
-    max-width: 64rem;
-    background: #fff;
-    color: var(--ink);
-    font-family: var(--font);
-    font-size: 15px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+a {
+  color: inherit;
+}
 
-  a { color: inherit; }
-  a:hover { text-decoration: none; }
+a:hover {
+  text-decoration: none;
+}
 
-  .skip { position: absolute; left: -9999px; }
-  .skip:focus { left: 1rem; top: 1rem; background: var(--ink); color: #fff; padding: .5rem 1rem; }
+/* Layout */
 
-  /* ── the three columns ──────────────────────────────────
-     Dates in the left margin, prose in the middle, stack in
-     the right margin. One grid, reused everywhere.
+.row {
+  display: grid;
+  grid-template-columns: 16rem 1fr 14rem;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid #ddd;
+}
 
-     16rem because the longest date line — "Sep 2024 – Aug 2025
-     (1 Year Part-Time)" — measures about 243px. Anything less
-     and it wraps mid-phrase. */
+header.row {
+  border-top: none;
+  padding-top: 3rem;
+}
+
+.stack-row {
+  grid-template-columns: 16rem 1fr;
+}
+
+/* Headings */
+
+h1 {
+  margin: 0 0 .6rem;
+  font-size: 1.4rem;
+}
+
+h2 {
+  margin: 3rem 0 0;
+  padding-bottom: .4rem;
+  border-bottom: 2px solid #111;
+  font-size: .8rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Text */
+
+.when {
+  color: #666;
+  font-size: .82rem;
+}
+
+.when span {
+  display: block;
+}
+
+.org {
+  margin: .15rem 0 .75rem;
+  color: #666;
+  font-size: .88rem;
+}
+
+p.text,
+.stack {
+  margin: 0;
+  font-size: .92rem;
+  color: #444;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+li {
+  margin-bottom: .45rem;
+  color: #444;
+  font-size: .92rem;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+/* Photo */
+
+.photo {
+  width: 100%;
+  max-width: 11rem;
+}
+
+/* Publications */
+
+.paper {
+  margin-top: .9rem;
+  padding-left: .9rem;
+  border-left: 2px solid #ddd;
+}
+
+.paper p {
+  margin: 0;
+  font-size: .86rem;
+}
+
+.paper .title {
+  font-weight: 600;
+}
+
+.paper .cite {
+  margin-top: .2rem;
+  color: #666;
+  font-size: .8rem;
+}
+
+/* mobile */
+
+@media (max-width: 52rem) {
   .row {
-    display: grid;
-    grid-template-columns: 16rem minmax(0, 1fr) 14rem;
-    gap: 0 2rem;
-    align-items: start;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--rule);
+    grid-template-columns: 1fr;
+    gap: .5rem;
   }
 
-  /* ── masthead ─────────────────────────────────────────── */
-  header.row { border-top: 0; padding-top: 3rem; }
+  .when {
+    order: -1;
+  }
 
   .photo {
-    width: 100%;
-    max-width: 11rem;
-    display: block;
-    filter: grayscale(1);
+    max-width: 6rem;
+  }
+}
+
+
+@media print {
+  body {
+    max-width: none;
+    padding: 0;
   }
 
-  h1 { margin: 0 0 .6rem; font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em; }
-
-  /* a <ul> can't sit inside a <p> — the browser closes the <p> early and the
-     list escapes it, so the class goes on the list itself */
-  ul.lede { margin: 0; padding-left: 1.1rem; }
-  ul.lede li { color: var(--mid); font-size: .95rem; margin-bottom: .3rem; }
-
-  /* ── section headings ─────────────────────────────────── */
-  h2 {
-    margin: 3rem 0 0;
-    padding-bottom: .4rem;
-    border-bottom: 2px solid var(--ink);
-    font-size: .8rem;
-    font-weight: 600;
-    letter-spacing: .16em;
-    text-transform: uppercase;
+  .photo {
+    display: none;
   }
 
-  /* ── entries ──────────────────────────────────────────── */
-  /* the date and its duration are one unit, so never break between them */
-  .when {
-    color: var(--soft);
-    font-size: .82rem;
-    line-height: 1.45;
-    white-space: nowrap;
+  .row {
+    break-inside: avoid;
   }
-  .when span { display: block; }
-
-  h3 { margin: 0; font-size: 1rem; font-weight: 600; }
-  .org { margin: .15rem 0 .75rem; color: var(--soft); font-size: .88rem; }
-
-  ul { margin: 0; padding-left: 1.1rem; }
-  li { margin-bottom: .45rem; color: var(--mid); font-size: .92rem; }
-  li:last-child { margin-bottom: 0; }
-
-  p.text { margin: 0; color: var(--mid); font-size: .92rem; }
-
-  /* ── right margin: the stack list ─────────────────────── */
-  .stack {
-    margin: 0;
-    color: var(--soft);
-    font-size: .78rem;
-    line-height: 1.6;
-  }
-
-  /* ── publication ──────────────────────────────────────── */
-  .paper { margin: .9rem 0 0; padding-left: .9rem; border-left: 2px solid var(--rule); }
-  .paper p { margin: 0; font-size: .86rem; }
-  .paper .title { font-weight: 600; }
-  .paper .cite { margin-top: .2rem; color: var(--soft); font-size: .8rem; }
-
-  /* ── footer ───────────────────────────────────────────── */
-  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-size: .85rem; color: var(--soft); }
-  footer p { margin: 0 0 .3rem; }
-
-  /* ── narrow screens: fold the margins into one column ─── */
-  @media (max-width: 52rem) {
-    .row { grid-template-columns: 1fr; gap: .5rem 0; }
-    .when { order: -1; white-space: normal; }   /* one column: let it wrap */
-    .photo { max-width: 6rem; }
-    aside { margin-top: .4rem; }
-  }
-
-  @media print {
-    body { max-width: none; font-size: 10.5pt; padding: 0; }
-    .skip, .photo { display: none; }
-    .row { break-inside: avoid; }
-    a { text-decoration: none; }
-  }
+}
 </style>
 </head>
 <body>
@@ -157,10 +182,10 @@
   <div>
     <h1>Thasanka Kandage</h1>
     <ul class="lede">
-      <li>Computer Engineering (Software Co-op) at the University of Alberta.</li>
+      <li>Software Engineering at the University of Alberta.</li>
       <li>Graduating April 2027.</li>
-      <li>26 Months of Internships</li>
-      <li>1 Global Tech · 2 Startups · 2 Research Positions</li>
+      <li>26 Months of Internships.</li>
+      <li>1 Global Tech · 2 Startups · 2 Research Positions.</li>
     </ul>
   </div>
   <div>
@@ -168,6 +193,7 @@
       <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a><br>
       <a href="https://www.linkedin.com/in/thasanka-kandage">LinkedIn</a><br>
       <a href="https://github.com/ThasankaK">GitHub</a><br>
+      <a href="https://scholar.google.com/citations?user=wISZKWgAAAAJ&hl=en">Google Scholar</a><br>
 
     </p>
   </div>
@@ -179,7 +205,7 @@
   <div class="when">Jan – Dec 2026 (1 Year)<span>Ottawa, ON</span></div>
   <div>
     <h3>Software Developer Intern</h3>
-    <p class="org">Ericsson</p>
+    <p class="org"><a href="https://www.ericsson.com/en">Ericsson</a></p>
     <ul>
       <li>Built a multi-agent AI system with LangGraph and FastAPI, wiring in Jira, Trouble Reports,
         Confluence, Gerrit, and Jenkins to automate build workflows and engineering troubleshooting.
@@ -190,21 +216,21 @@
         PostgreSQL/pgvector knowledge base, replacing manual updates.</li>
       <li>Containerized the TypeScript frontend and FastAPI backend, built GitLab CI/CD pipelines, and
         managed Kubernetes manifests covering Ingress, RBAC, secrets, and persistent storage.</li>
-      <li>On the radio side: automated downlink/uplink nodal time-alignment testing with a Python
-        SCPI/PyVISA control layer for oscilloscopes, signal generators, and analyzers, plus CPRI
+      <li>Automated downlink/uplink nodal time-alignment testing with a Python
+        SCPI/PyVISA control layer for oscilloscopes, signal generators, analyzers, and CPRI
         capture over raw sockets.</li>
     </ul>
   </div>
   <aside>
-    <p class="stack">LangGraph · FastAPI · PostgreSQL/pgvector · Kubernetes · GitLab CI/CD · Langfuse</p>
+    <p class="stack">LangGraph · FastAPI · PostgreSQL/pgvector · Kubernetes · GitLab CI/CD · Docker · ArgoCD </p>
   </aside>
 </article>
 
 <article class="row">
-  <div class="when">Sep – Oct 2025 (Two Months)<span>Calgary, AB</span></div>
+  <div class="when">Sep – Oct 2025 (2 Months)<span>Calgary, AB</span></div>
   <div>
     <h3>AI Engineer Intern</h3>
-    <p class="org">Customer Maps</p>
+    <p class="org"><a href="https://customermaps.co/">Customer Maps</a></p>
     <ul>
       <li>Built an Express.js backend on Cloud Run powering a Shopify AI agent system, connecting
         Shopify APIs, Vertex AI agents, and MCP servers to automate store operations.</li>
@@ -213,26 +239,29 @@
     </ul>
   </div>
   <aside>
-    <p class="stack">Express.js · Cloud Run · Vertex AI · MCP · RAG</p>
+    <p class="stack">Express.js · Cloud Run · Vertex AI · Python · JavaScript</p>
   </aside>
 </article>
 
 <article class="row">
   <div class="when">May – Aug 2025 (4 Months)<span>Edmonton, AB</span></div>
   <div>
-    <h3>Research Assistant — UAVs &amp; path planning</h3>
-    <p class="org">University of Alberta - Dr. Nima Shirzad-Ghaleroudkhani</p>
+    <h3>Research Assistant — UAVs &amp; Path Planning</h3>
+    <p class="org"><a href="https://apps.ualberta.ca/directory/person/shirzadg">University of Alberta - Dr. Nima Shirzad-Ghaleroudkhani</a></p>
     <ul>
       <li>Developed an autonomous survey routing system that cut drone flight time by 46% while
         holding 91% structure coverage.</li>
       <li>Applied 3D A* search and nearest-neighbor optimization to generate collision-free waypoint
         paths around a bridge pillar.</li>
-      <li>Assembled a custom LiDAR–ESP32 sensing module — soldering, firmware, laser mapping — for
-        real-time pixel-to-world localization.</li>
     </ul>
+    <div class="paper">
+      <p class="title"><a href="https://www.iaarc.org/publications/2026_proceedings_of_the_43rd_isarc_singapore/autonomous_drone_navigation_for_structural_inspection_using_3d_gaussian_splatting_and_optimization_based_path_planning.html">Autonomous Drone Navigation for Structural Inspection Using 3D Gaussian Splatting and Optimization-based Path Planning</a></p>
+      <p class="cite">Hui Zuo, Thasanka Kandage, Hongyang Xu, Nima Shirzad-Ghaleroudkhani, Qipei Mei, José
+Fiestas and Luis A. Bedriñana · ISARC 2026 · Technical Paper #1467</p>
+    </div>
   </div>
   <aside>
-    <p class="stack">Python · 3D A* · LiDAR · ESP32 · ROS2</p>
+    <p class="stack">Python · DJI Drones</p>
   </aside>
 </article>
 
@@ -240,24 +269,22 @@
   <div class="when">Sep 2024 – Aug 2025 (1 Year Part-Time)<span>Edmonton, AB</span></div>
   <div>
     <h3>Research Assistant — Thermal Energy Storage</h3>
-    <p class="org">University of Alberta - Renewable Thermal Laboratory - Dr. Taha Manzoor</p>
+    <p class="org"><a href="https://rtl-lab.ca/">University of Alberta - Renewable Thermal Lab - Dr. Taha Manzoor</a></p>
     <ul>
       <li>Ran multi-objective optimization of a thermal energy storage system, tuning five design
         parameters with genetic algorithms in MATLAB. The work became a first-author conference
         paper.</li>
-      <li>Contributed two PyTorch models: a physics-guided neural network with embedded physical
+      <li>Contributed to two PyTorch models: a physics-guided neural network with embedded physical
         constraints, and an LSTM for forecasting storage tank behaviour.</li>
-      <li>Assisting a three-person research team, coordinating work and mentoring newer students.</li>
     </ul>
     <div class="paper">
-      <p class="title">Optimizing the performance of liquid-based medium-temperature volumetric
-        solar thermal receivers using genetic algorithms: a step towards digital twinning</p>
+      <p class="title"><a href="https://asmedigitalcollection.asme.org/ES/proceedings-abstract/ES2025/1222293">Optimizing the performance of liquid-based medium-temperature volumetric solar thermal receivers using genetic algorithms: a step towards digital twinning</a></p>
       <p class="cite">T. Kandage, M. S. Shoaib, M. T. Manzoor · ASME ES 2025, AI for Energy
-        Sustainability I · Technical Paper #155317 · presented</p>
+        Sustainability I · Technical Paper #155317 · Presented</p>
     </div>
   </div>
   <aside>
-    <p class="stack">MATLAB · Genetic algorithms · PyTorch · Physics-guided ML</p>
+    <p class="stack">MATLAB · Genetic Algorithms · PyTorch · Python</p>
   </aside>
 </article>
 
@@ -265,7 +292,7 @@
   <div class="when">Jan 2024 – Aug 2025 (8 Months)<span>Lethbridge, AB</span></div>
   <div>
     <h3>Machine Learning Engineer Intern</h3>
-    <p class="org">Hub for Neuroengineering Solutions</p>
+    <p class="org"><a href="https://www.ulethbridge.ca/core-facilities/neuroengineering-hub">Hub for Neuroengineering Solutions</a></p>
     <ul>
       <li>Reached 93% mAP@50 on mice imagery by training CNN and Vision Transformer models for
         object detection and pose estimation.</li>
@@ -275,7 +302,7 @@
     </ul>
   </div>
   <aside>
-    <p class="stack">PyTorch · Vision Transformers · OpenCV · scikit-learn</p>
+    <p class="stack">PyTorch · Python · Ultralytics · OpenCV · scikit-learn</p>
   </aside>
 </article>
 
@@ -283,49 +310,43 @@
   <div class="when">Sep 2024 – Oct 2025<span>Edmonton, AB</span></div>
   <div>
     <h3>Software Team Co-Lead</h3>
-    <p class="org">UAlberta RoboMaster</p>
+    <p class="org"><a href="https://www.robomasterna.com/">UAlberta RoboMaster</a></p>
     <ul>
       <li>Contributed to a C++ real-time auto-aiming system using OpenCV target detection and PnP
         pose solving, and built the Python camera calibration tooling behind it.</li>
-      <li>Worked on autonomous navigation, fusing LiDAR, IMU, and wheel-encoder data for
-        localization.</li>
       <li>Placed 9th of 20 in 3v3 at RoboMaster North America 2025 in San Diego.</li>
     </ul>
   </div>
   <aside>
-    <p class="stack">C++ · OpenCV · PnP · ROS2 · Python</p>
+    <p class="stack">C++ · OpenCV · ROS2 · Python</p>
   </aside>
 </article>
 
 <h2 id="stack">Stack</h2>
 
-<div class="row">
+<div class="row stack-row">
   <div class="when">Languages</div>
-  <div><p class="text">Python · C++ · C · Java · TypeScript · SQL · MATLAB</p></div>
+  <div><p class="text">Python · C++ · C · Java · SQL · TypeScript/JavaScript · MATLAB</p></div>
   <div></div>
 </div>
-<div class="row">
-  <div class="when">AI &amp; ML</div>
-  <div><p class="text">LangGraph · PyTorch · TensorFlow · scikit-learn · OpenCV · RAG · pgvector/HNSW · Langfuse · Vertex AI</p></div>
+<div class="row stack-row">
+  <div class="when">Libraries &amp; Frameworks</div>
+  <div><p class="text">LangGraph · FastAPI · PyTorch · TensorFlow · OpenCV · Ultralytics · ROS2 · scikit-learn · Express.js · Pandas · NumPy · BeautifulSoup</p></div>
   <div></div>
 </div>
-<div class="row">
-  <div class="when">Infra</div>
-  <div><p class="text">FastAPI · Express.js · Docker · Kubernetes · GitLab CI/CD · Argo CD · Jenkins · PostgreSQL · MongoDB · GCP · Linux</p></div>
+<div class="row stack-row">
+  <div class="when">Platforms &amp; Tools</div>
+  <div><p class="text">Docker · Kubernetes · PostgreSQL · Git · GitLab CI/CD · Argo CD · Jenkins · GCP · Vertex AI · Cloud Run · Google ADK · MongoDB · Firestore · Linux</p></div>
   <div></div>
 </div>
-<div class="row">
-  <div class="when">Hardware</div>
-  <div><p class="text">ROS2 · SCPI/PyVISA · Raw sockets · ESP32 · LiDAR · Embedded firmware</p></div>
-  <div></div>
-</div>
+
 
 <h2 id="projects">Projects</h2>
 
 <article class="row">
   <div class="when">Open dataset</div>
   <div>
-    <h3><a href="https://github.com/ThasankaK/UFC-Dataset-and-Model-Predictor">UFC fight dataset &amp; predictor</a></h3>
+    <h3><a href="https://github.com/ThasankaK/UFC-Dataset-and-Model-Predictor">UFC Fight Dataset &amp; Predictor</a> — <a href="https://www.kaggle.com/datasets/thasankakandage/ufc-dataset-2024">(Check It Out)&larr;</a></h3>
     <p class="text">Scraper for every fighter, event, and fight stat on the official UFC site.
       Published the cleaned dataset on Kaggle — 1,500+ views, 300+ downloads. Random Forest, SVM, and
       XGBoost models on top of the engineered features.</p>
@@ -346,31 +367,17 @@
 <article class="row">
   <div class="when">Vision</div>
   <div>
-      <h3><a href="Sudoku.html">AI Sudoku solver</a> — <a href="Sudoku.html">try it &rarr;</a></h3>
+      <h3><a href="https://github.com/ThasankaK/AISudokuSolver">AI Sudoku Solver</a> — <a href="Sudoku.html">(Try It Out)&larr;</a></h3>
     <p class="text">Reads a Sudoku from an image and solves it. CNN digit recognition after an OpenCV
       pipeline of contour detection, thresholding, and perspective warping, then recursive
-        backtracking. <a href="Sudoku.html">Solve it with the backend</a> —
-      <a href="https://github.com/ThasankaK/AISudokuSolver">source</a>.</p>
+        backtracking.
   </div>
   <aside><p class="stack">Python · OpenCV · TensorFlow</p></aside>
 </article>
 
 
-<article class="row">
-  <div class="when">LLM</div>
-  <div>
-    <h3>Spatial reasoning with Tree-of-Thought prompting</h3>
-    <p class="text">Pipelines that flatten ASCII mazes and 3×3 grids into single-string prompts, then
-      run an LLM through Tree-of-Thought chains. Structured steps improved maze-solving accuracy over
-      direct prompting.</p>
-  </div>
-  <aside><p class="stack">Python · Prompt engineering · LLM evaluation</p></aside>
-</article>
-
 
 <footer>
-  <p>More on <a href="https://github.com/ThasankaK">GitHub</a>.</p>
-  <p>Thasanka Kandage · <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a></p>
 </footer>
 
 </body>
