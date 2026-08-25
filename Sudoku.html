@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sudoku solver — Thasanka Kandage</title>
+<meta name="description" content="Upload a photo of a Sudoku puzzle. A CNN reads the digits and backtracking solves it, entirely in your browser.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --ink: #111111; --mid: #3d3d3d; --soft: #6d6d6d; --rule: #dcdcdc;
+    --ok: #1c6b3f; --bad: #b03030;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto; padding: 0 1.5rem 5rem; max-width: 64rem;
+    background: #fff; color: var(--ink); font-family: var(--font);
+    font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  h1 { margin: 3rem 0 .4rem; font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em; }
+  .lede { margin: 0 0 2rem; color: var(--mid); max-width: 46rem; }
+  h2 {
+    margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 2px solid var(--ink);
+    font-size: .8rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .back { font-size: .85rem; color: var(--soft); text-decoration: none; }
+  .back:hover { color: var(--ink); }
+
+  /* ── controls ─────────────────────────────────────────── */
+  .controls { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: 1rem; }
+  button, .filebtn {
+    font: inherit; font-size: .88rem; padding: .45rem .9rem; cursor: pointer;
+    background: #fff; color: var(--ink); border: 1px solid var(--ink); border-radius: 2px;
+  }
+  button:hover, .filebtn:hover { background: var(--ink); color: #fff; }
+  button[disabled] { opacity: .35; cursor: default; }
+  button[disabled]:hover { background: #fff; color: var(--ink); }
+  input[type=file] { display: none; }
+
+  .status { margin: 0 0 1.5rem; font-size: .85rem; color: var(--soft); min-height: 1.4em; }
+  .status.err { color: var(--bad); }
+
+  /* ── the working area ─────────────────────────────────── */
+  .panes { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 2rem; }
+  figure { margin: 0; }
+  figcaption { margin-top: .4rem; font-size: .78rem; color: var(--soft); }
+  canvas { display: block; width: 100%; max-width: 27rem; border: 1px solid var(--rule); background: #fafafa; }
+  canvas.hidden, .hidden { display: none; }
+
+  /* ── editable grid ────────────────────────────────────── */
+  .grid { display: grid; grid-template-columns: repeat(9, 1fr); max-width: 27rem; border: 2px solid var(--ink); }
+  .grid input {
+    font: inherit; font-size: 1rem; text-align: center; width: 100%; aspect-ratio: 1;
+    border: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    background: #fff; color: var(--ink); padding: 0; min-width: 0;
+  }
+  .grid input:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
+  .grid input.low { background: #fff6e5; }         /* model wasn't confident */
+  .grid input.clash { background: #ffe9e9; color: var(--bad); font-weight: 600; }
+  .grid input:nth-child(9n+4), .grid input:nth-child(9n+7) { border-left: 2px solid var(--ink); }
+  .grid input:nth-child(n+19):nth-child(-n+27),
+  .grid input:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--ink); }
+
+  .legend { margin: .6rem 0 0; font-size: .78rem; color: var(--soft); }
+  .swatch { display: inline-block; width: .8em; height: .8em; vertical-align: -.05em; border: 1px solid var(--rule); margin-right: .25em; }
+  .swatch.low { background: #fff6e5; }
+  .swatch.clash { background: #ffe9e9; }
+
+  /* ── how it works ─────────────────────────────────────── */
+  ol.steps { margin: 0; padding-left: 1.2rem; max-width: 46rem; }
+  ol.steps li { margin-bottom: .5rem; color: var(--mid); font-size: .92rem; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; }
+
+  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-size: .85rem; color: var(--soft); }
+</style>
+</head>
+<body>
+
+<p><a class="back" href="index.html">← Thasanka Kandage</a></p>
+
+<h1>Sudoku solver</h1>
+<p class="lede">
+  Upload a photo of a Sudoku puzzle. It finds the grid, reads the digits with a CNN I trained, and
+  solves the rest by backtracking. Everything runs in your browser — the image is never uploaded
+  anywhere. <a href="https://github.com/ThasankaK/AISudokuSolver">Source</a>.
+</p>
+
+<div class="controls">
+  <label class="filebtn">Choose an image<input id="file" type="file" accept="image/*"></label>
+  <button id="solve" disabled>Solve</button>
+  <button id="reset" disabled>Reset</button>
+</div>
+
+<p class="status" id="status">Choose a Sudoku image, then send it to the backend.</p>
+
+<div class="panes">
+  <figure>
+    <canvas id="cvsSource" width="450" height="450"></canvas>
+    <figcaption id="capSource">Your image, with the detected grid outlined</figcaption>
+  </figure>
+
+  <figure>
+    <canvas id="cvsWarp" width="450" height="450"></canvas>
+    <figcaption id="capGrid">
+      The solved puzzle returned by the backend.
+    </figcaption>
+  </figure>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li>Grayscale, a 5×5 Gaussian blur, then an adaptive threshold (Gaussian, block 11, C 2) — the
+    same parameters as the Python version.</li>
+  <li>Find external contours, keep the largest four-sided one above 50px² using
+    <code>approxPolyDP</code> at 2% of the perimeter. That's the puzzle border.</li>
+  <li>Order those four corners by the sum and difference of their coordinates, then warp the
+    quadrilateral to a flat 450×450 square.</li>
+  <li>Split into 81 cells, trim 4px of border off each, resize to 32×32, normalize, and run all 81
+    through the CNN in one batch. Predictions under 20% confidence are treated as empty.</li>
+  <li>Check the read board for duplicate digits in any row, column, or box — a single misread
+    creates a contradiction, and it's better to point at it than to fail silently.</li>
+  <li>Solve by backtracking, capped at two million steps so a bad read can never hang the tab.</li>
+  <li>Draw the found digits onto the flat grid, warp them back through the inverse transform, and
+    blend over your original image.</li>
+</ol>
+
+<footer>
+  <p>Thasanka Kandage · <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a></p>
+</footer>
+
+<script>
+const SIZE = 450;
+// Update this URL after deploying to Render — e.g., "https://sudoku-api-xxxxx.onrender.com"
+const API_BASE = "https://personalwebsite-v4g4.onrender.com";
+
+const els = {
+  file: document.getElementById("file"),
+  solve: document.getElementById("solve"),
+  reset: document.getElementById("reset"),
+  status: document.getElementById("status"),
+  source: document.getElementById("cvsSource"),
+  warp: document.getElementById("cvsWarp"),
+  capGrid: document.getElementById("capGrid"),
+};
+
+let currentFile = null;
+
+function say(msg, isErr) {
+  els.status.textContent = msg;
+  els.status.classList.toggle("err", !!isErr);
+}
+
+els.file.addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0];
+  if (f) readImage(f);
+});
+
+function readImage(file) {
+  currentFile = file;
+  const img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(img.src);
+    const ctx = els.source.getContext("2d");
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    ctx.drawImage(img, 0, 0, SIZE, SIZE);
+    els.solve.disabled = false;
+    els.reset.disabled = false;
+    say("Image loaded. Press Solve to send it to the backend.");
+  };
+  img.onerror = () => say("That file didn't decode as an image.", true);
+  img.src = URL.createObjectURL(file);
+}
+
+async function solveWithBackend() {
+  if (!currentFile) {
+    say("Choose an image first.", true);
+    return;
+  }
+
+  say("Sending the image to the backend…");
+  els.solve.disabled = true;
+
+  try {
+    const formData = new FormData();
+    formData.append("image", currentFile);
+
+    const response = await fetch(`${API_BASE}/solve`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.detail || "The backend could not solve this puzzle.");
+    }
+
+    const img = new Image();
+    img.onload = () => {
+      const ctx = els.warp.getContext("2d");
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      ctx.drawImage(img, 0, 0, SIZE, SIZE);
+      say(`Solved successfully. Backend read ${payload.digits.filter(Boolean).length} digits.`);
+      els.solve.disabled = false;
+    };
+    img.onerror = () => {
+      throw new Error("The backend returned an image that could not be displayed.");
+    };
+    img.src = payload.solutionImage;
+  } catch (err) {
+    say(err.message, true);
+    els.solve.disabled = false;
+  }
+}
+
+els.reset.addEventListener("click", () => {
+  currentFile = null;
+  els.file.value = "";
+  els.source.getContext("2d").clearRect(0, 0, SIZE, SIZE);
+  els.warp.getContext("2d").clearRect(0, 0, SIZE, SIZE);
+  els.solve.disabled = true;
+  els.reset.disabled = true;
+  say("Choose a Sudoku image, then send it to the backend.");
+});
+
+els.solve.addEventListener("click", solveWithBackend);
+</script>
+</body>
+</html>

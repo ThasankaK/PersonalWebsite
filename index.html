@@ -1,61 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thasanka Kandage</title>
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- using these websites for icon creation -->
-    <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
-    <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" />
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thasanka Kandage — Software Engineer</title>
+<meta name="description" content="Computer engineering student at the University of Alberta, currently interning at Ericsson. Backend, infrastructure, and applied AI.">
+<link rel="canonical" href="https://tkandage.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tkandage.com/">
+<meta property="og:title" content="Thasanka Kandage — Software Engineer">
+<meta property="og:description" content="Computer engineering student at the University of Alberta, currently interning at Ericsson. Backend, infrastructure, and applied AI.">
+<meta property="og:image" content="https://tkandage.com/images/pfp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Crect x='5' y='7' width='22' height='2' fill='%23111'/%3E%3Crect x='5' y='15' width='22' height='2' fill='%23111'/%3E%3Crect x='5' y='23' width='13' height='2' fill='%23111'/%3E%3C/svg%3E">
+
+<!-- One font for the whole page. Swap this line and --font below to change it. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --ink:  #111111;   /* headings, body */
+    --mid:  #3d3d3d;   /* bullets, prose */
+    --soft: #6d6d6d;   /* dates, notes, labels */
+    --rule: #dcdcdc;   /* every hairline */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+    max-width: 64rem;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  a:hover { text-decoration: none; }
+
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 1rem; top: 1rem; background: var(--ink); color: #fff; padding: .5rem 1rem; }
+
+  /* ── the three columns ──────────────────────────────────
+     Dates in the left margin, prose in the middle, stack in
+     the right margin. One grid, reused everywhere.
+
+     16rem because the longest date line — "Sep 2024 – Aug 2025
+     (1 Year Part-Time)" — measures about 243px. Anything less
+     and it wraps mid-phrase. */
+  .row {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr) 14rem;
+    gap: 0 2rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  header.row { border-top: 0; padding-top: 3rem; }
+
+  .photo {
+    width: 100%;
+    max-width: 11rem;
+    display: block;
+    filter: grayscale(1);
+  }
+
+  h1 { margin: 0 0 .6rem; font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em; }
+
+  /* a <ul> can't sit inside a <p> — the browser closes the <p> early and the
+     list escapes it, so the class goes on the list itself */
+  ul.lede { margin: 0; padding-left: 1.1rem; }
+  ul.lede li { color: var(--mid); font-size: .95rem; margin-bottom: .3rem; }
+
+  /* ── section headings ─────────────────────────────────── */
+  h2 {
+    margin: 3rem 0 0;
+    padding-bottom: .4rem;
+    border-bottom: 2px solid var(--ink);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  /* ── entries ──────────────────────────────────────────── */
+  /* the date and its duration are one unit, so never break between them */
+  .when {
+    color: var(--soft);
+    font-size: .82rem;
+    line-height: 1.45;
+    white-space: nowrap;
+  }
+  .when span { display: block; }
+
+  h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .org { margin: .15rem 0 .75rem; color: var(--soft); font-size: .88rem; }
+
+  ul { margin: 0; padding-left: 1.1rem; }
+  li { margin-bottom: .45rem; color: var(--mid); font-size: .92rem; }
+  li:last-child { margin-bottom: 0; }
+
+  p.text { margin: 0; color: var(--mid); font-size: .92rem; }
+
+  /* ── right margin: the stack list ─────────────────────── */
+  .stack {
+    margin: 0;
+    color: var(--soft);
+    font-size: .78rem;
+    line-height: 1.6;
+  }
+
+  /* ── publication ──────────────────────────────────────── */
+  .paper { margin: .9rem 0 0; padding-left: .9rem; border-left: 2px solid var(--rule); }
+  .paper p { margin: 0; font-size: .86rem; }
+  .paper .title { font-weight: 600; }
+  .paper .cite { margin-top: .2rem; color: var(--soft); font-size: .8rem; }
+
+  /* ── footer ───────────────────────────────────────────── */
+  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 2px solid var(--ink); font-size: .85rem; color: var(--soft); }
+  footer p { margin: 0 0 .3rem; }
+
+  /* ── narrow screens: fold the margins into one column ─── */
+  @media (max-width: 52rem) {
+    .row { grid-template-columns: 1fr; gap: .5rem 0; }
+    .when { order: -1; white-space: normal; }   /* one column: let it wrap */
+    .photo { max-width: 6rem; }
+    aside { margin-top: .4rem; }
+  }
+
+  @media print {
+    body { max-width: none; font-size: 10.5pt; padding: 0; }
+    .skip, .photo { display: none; }
+    .row { break-inside: avoid; }
+    a { text-decoration: none; }
+  }
+</style>
 </head>
 <body>
-    <div id="app">
-        
-        <header>
-            <h1>{{ name }}</h1>
-            <div class="social-links-container">
-                <button class="toggle-button" id="toggle-button">
-                    <i class="lni lni-angle-double-left"></i> <!-- ths looks pre bad def going to change htis-->
-                </button>
-            <div class="social-links">
-                <a :href="githubUrl" target="_blank"><i class="lni lni-github-original"></i></a>
-                <a :href="linkedinUrl" target="_blank"><i class="lni lni-linkedin-original"></i></a>
-                <a :href="kaggleUrl" target="_blank"><i class="lab la-kaggle"></i></a> <!--this kaggle one is small and diff than others, sohuld change but not important rn-->
-                <a :href="`mailto:${email}`" target="_blank"><i class="lni lni-envelope"></i></a>
-                <a :href="instagramUrl" target="_blank"><i class="lni lni-instagram-original"></i></a>
-            </div>
-        </div>
 
-        <!-- about me -->
-        <section class="about-me">
-            <img src="images/pfp.jpg" alt="Profile Picture" class="profile-pic">
-            <div class="about-content">
-                <h2>About Me</h2>
-                <p v-html="aboutMe"></p>
-                <a :href="resumeUrl" target="_blank" class="resume-link">
-                    <i class="lni lni-download"></i> Resume
-                </a>
-            </div>
-        </section>
 
-        </header>
-        
-        
-        <section class="projects">
-            <div class="project" v-for="project in projects" :key="project.name">
-                <a :href="project.link" target="_blank">
-                    <h2>{{ project.name }}</h2>
-                </a>
-            </div>
-        </section>
-        
+<header class="row">
+  <div>
+    <img class="photo" src="images/pfp.jpg" alt="Thasanka Kandage">
+  </div>
+  <div>
+    <h1>Thasanka Kandage</h1>
+    <ul class="lede">
+      <li>Computer Engineering (Software Co-op) at the University of Alberta.</li>
+      <li>Graduating April 2027.</li>
+      <li>26 Months of Internships</li>
+      <li>1 Global Tech · 2 Startups · 2 Research Positions</li>
+    </ul>
+  </div>
+  <div>
+    <p class="stack">
+      <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a><br>
+      <a href="https://www.linkedin.com/in/thasanka-kandage">LinkedIn</a><br>
+      <a href="https://github.com/ThasankaK">GitHub</a><br>
 
+    </p>
+  </div>
+</header>
+
+<h2 id="work">Work</h2>
+
+<article class="row">
+  <div class="when">Jan – Dec 2026 (1 Year)<span>Ottawa, ON</span></div>
+  <div>
+    <h3>Software Developer Intern</h3>
+    <p class="org">Ericsson</p>
+    <ul>
+      <li>Built a multi-agent AI system with LangGraph and FastAPI, wiring in Jira, Trouble Reports,
+        Confluence, Gerrit, and Jenkins to automate build workflows and engineering troubleshooting.
+        1,000+ conversations recorded.</li>
+      <li>Cut retrieval latency from ~20s to under 1s across 3M+ records by fusing HNSW vector search
+        with PostgreSQL keyword search using reciprocal rank fusion.</li>
+      <li>Built an ingestion pipeline that chunks and embeds ~100 Jira tickets a week into a
+        PostgreSQL/pgvector knowledge base, replacing manual updates.</li>
+      <li>Containerized the TypeScript frontend and FastAPI backend, built GitLab CI/CD pipelines, and
+        managed Kubernetes manifests covering Ingress, RBAC, secrets, and persistent storage.</li>
+      <li>On the radio side: automated downlink/uplink nodal time-alignment testing with a Python
+        SCPI/PyVISA control layer for oscilloscopes, signal generators, and analyzers, plus CPRI
+        capture over raw sockets.</li>
+    </ul>
+  </div>
+  <aside>
+    <p class="stack">LangGraph · FastAPI · PostgreSQL/pgvector · Kubernetes · GitLab CI/CD · Langfuse</p>
+  </aside>
+</article>
+
+<article class="row">
+  <div class="when">Sep – Oct 2025 (Two Months)<span>Calgary, AB</span></div>
+  <div>
+    <h3>AI Engineer Intern</h3>
+    <p class="org">Customer Maps</p>
+    <ul>
+      <li>Built an Express.js backend on Cloud Run powering a Shopify AI agent system, connecting
+        Shopify APIs, Vertex AI agents, and MCP servers to automate store operations.</li>
+      <li>Improved product search relevance and recommendation consistency with prompt engineering,
+        RAG, catalog embeddings, and context management.</li>
+    </ul>
+  </div>
+  <aside>
+    <p class="stack">Express.js · Cloud Run · Vertex AI · MCP · RAG</p>
+  </aside>
+</article>
+
+<article class="row">
+  <div class="when">May – Aug 2025 (4 Months)<span>Edmonton, AB</span></div>
+  <div>
+    <h3>Research Assistant — UAVs &amp; path planning</h3>
+    <p class="org">University of Alberta - Dr. Nima Shirzad-Ghaleroudkhani</p>
+    <ul>
+      <li>Developed an autonomous survey routing system that cut drone flight time by 46% while
+        holding 91% structure coverage.</li>
+      <li>Applied 3D A* search and nearest-neighbor optimization to generate collision-free waypoint
+        paths around a bridge pillar.</li>
+      <li>Assembled a custom LiDAR–ESP32 sensing module — soldering, firmware, laser mapping — for
+        real-time pixel-to-world localization.</li>
+    </ul>
+  </div>
+  <aside>
+    <p class="stack">Python · 3D A* · LiDAR · ESP32 · ROS2</p>
+  </aside>
+</article>
+
+<article class="row">
+  <div class="when">Sep 2024 – Aug 2025 (1 Year Part-Time)<span>Edmonton, AB</span></div>
+  <div>
+    <h3>Research Assistant — Thermal Energy Storage</h3>
+    <p class="org">University of Alberta - Renewable Thermal Laboratory - Dr. Taha Manzoor</p>
+    <ul>
+      <li>Ran multi-objective optimization of a thermal energy storage system, tuning five design
+        parameters with genetic algorithms in MATLAB. The work became a first-author conference
+        paper.</li>
+      <li>Contributed two PyTorch models: a physics-guided neural network with embedded physical
+        constraints, and an LSTM for forecasting storage tank behaviour.</li>
+      <li>Assisting a three-person research team, coordinating work and mentoring newer students.</li>
+    </ul>
+    <div class="paper">
+      <p class="title">Optimizing the performance of liquid-based medium-temperature volumetric
+        solar thermal receivers using genetic algorithms: a step towards digital twinning</p>
+      <p class="cite">T. Kandage, M. S. Shoaib, M. T. Manzoor · ASME ES 2025, AI for Energy
+        Sustainability I · Technical Paper #155317 · presented</p>
     </div>
+  </div>
+  <aside>
+    <p class="stack">MATLAB · Genetic algorithms · PyTorch · Physics-guided ML</p>
+  </aside>
+</article>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="scripts.js"></script>
+<article class="row">
+  <div class="when">Jan 2024 – Aug 2025 (8 Months)<span>Lethbridge, AB</span></div>
+  <div>
+    <h3>Machine Learning Engineer Intern</h3>
+    <p class="org">Hub for Neuroengineering Solutions</p>
+    <ul>
+      <li>Reached 93% mAP@50 on mice imagery by training CNN and Vision Transformer models for
+        object detection and pose estimation.</li>
+      <li>Cut manual labeling time with an active-learning annotation tool that retrained on user
+        corrections and surfaced low-confidence samples for review.</li>
+      <li>Improved dataset diversity using t-SNE, DBSCAN, and convex-hull analysis.</li>
+    </ul>
+  </div>
+  <aside>
+    <p class="stack">PyTorch · Vision Transformers · OpenCV · scikit-learn</p>
+  </aside>
+</article>
+
+<article class="row">
+  <div class="when">Sep 2024 – Oct 2025<span>Edmonton, AB</span></div>
+  <div>
+    <h3>Software Team Co-Lead</h3>
+    <p class="org">UAlberta RoboMaster</p>
+    <ul>
+      <li>Contributed to a C++ real-time auto-aiming system using OpenCV target detection and PnP
+        pose solving, and built the Python camera calibration tooling behind it.</li>
+      <li>Worked on autonomous navigation, fusing LiDAR, IMU, and wheel-encoder data for
+        localization.</li>
+      <li>Placed 9th of 20 in 3v3 at RoboMaster North America 2025 in San Diego.</li>
+    </ul>
+  </div>
+  <aside>
+    <p class="stack">C++ · OpenCV · PnP · ROS2 · Python</p>
+  </aside>
+</article>
+
+<h2 id="stack">Stack</h2>
+
+<div class="row">
+  <div class="when">Languages</div>
+  <div><p class="text">Python · C++ · C · Java · TypeScript · SQL · MATLAB</p></div>
+  <div></div>
+</div>
+<div class="row">
+  <div class="when">AI &amp; ML</div>
+  <div><p class="text">LangGraph · PyTorch · TensorFlow · scikit-learn · OpenCV · RAG · pgvector/HNSW · Langfuse · Vertex AI</p></div>
+  <div></div>
+</div>
+<div class="row">
+  <div class="when">Infra</div>
+  <div><p class="text">FastAPI · Express.js · Docker · Kubernetes · GitLab CI/CD · Argo CD · Jenkins · PostgreSQL · MongoDB · GCP · Linux</p></div>
+  <div></div>
+</div>
+<div class="row">
+  <div class="when">Hardware</div>
+  <div><p class="text">ROS2 · SCPI/PyVISA · Raw sockets · ESP32 · LiDAR · Embedded firmware</p></div>
+  <div></div>
+</div>
+
+<h2 id="projects">Projects</h2>
+
+<article class="row">
+  <div class="when">Open dataset</div>
+  <div>
+    <h3><a href="https://github.com/ThasankaK/UFC-Dataset-and-Model-Predictor">UFC fight dataset &amp; predictor</a></h3>
+    <p class="text">Scraper for every fighter, event, and fight stat on the official UFC site.
+      Published the cleaned dataset on Kaggle — 1,500+ views, 300+ downloads. Random Forest, SVM, and
+      XGBoost models on top of the engineered features.</p>
+  </div>
+  <aside><p class="stack">Python · BeautifulSoup · Pandas · XGBoost</p></aside>
+</article>
+
+<article class="row">
+  <div class="when">Systems</div>
+  <div>
+    <h3><a href="https://github.com/ThasankaK/Custom-UNIX-Shell">TKShell — custom UNIX shell</a></h3>
+    <p class="text">Piping, I/O redirection, background jobs, and built-ins, with signal handling so
+      child processes can't take the shell down with them.</p>
+  </div>
+  <aside><p class="stack">C · POSIX · Process control</p></aside>
+</article>
+
+<article class="row">
+  <div class="when">Vision</div>
+  <div>
+      <h3><a href="Sudoku.html">AI Sudoku solver</a> — <a href="Sudoku.html">try it &rarr;</a></h3>
+    <p class="text">Reads a Sudoku from an image and solves it. CNN digit recognition after an OpenCV
+      pipeline of contour detection, thresholding, and perspective warping, then recursive
+        backtracking. <a href="Sudoku.html">Solve it with the backend</a> —
+      <a href="https://github.com/ThasankaK/AISudokuSolver">source</a>.</p>
+  </div>
+  <aside><p class="stack">Python · OpenCV · TensorFlow</p></aside>
+</article>
+
+
+<article class="row">
+  <div class="when">LLM</div>
+  <div>
+    <h3>Spatial reasoning with Tree-of-Thought prompting</h3>
+    <p class="text">Pipelines that flatten ASCII mazes and 3×3 grids into single-string prompts, then
+      run an LLM through Tree-of-Thought chains. Structured steps improved maze-solving accuracy over
+      direct prompting.</p>
+  </div>
+  <aside><p class="stack">Python · Prompt engineering · LLM evaluation</p></aside>
+</article>
+
+
+<footer>
+  <p>More on <a href="https://github.com/ThasankaK">GitHub</a>.</p>
+  <p>Thasanka Kandage · <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a></p>
+</footer>
+
 </body>
 </html>
