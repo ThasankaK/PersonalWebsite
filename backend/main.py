@@ -84,8 +84,8 @@ def solve_sudoku_image(image: np.ndarray) -> dict:
 
     boxes = splitBoxes(image_warp_gray)
     numbers = getPrediction(boxes, model)
-    image_detected_digits = displayNumbers(image_blank.copy(), numbers, color=(255, 255, 255))
-    numbers_array = np.asarray(numbers)
+    numbers_array = np.asarray(numbers, dtype=int)
+    image_detected_digits = displayNumbers(image_blank.copy(), numbers_array.tolist(), color=(255, 255, 255))
     pos_array = np.where(numbers_array > 0, 0, 1)
 
     board = np.array_split(numbers_array, 9)
@@ -94,7 +94,7 @@ def solve_sudoku_image(image: np.ndarray) -> dict:
         raise HTTPException(status_code=400, detail="The detected board has no valid solution.")
 
     flat_solution = [item for sublist in board for item in sublist]
-    solved_numbers = flat_solution * pos_array
+    solved_numbers = (np.asarray(flat_solution, dtype=int) * pos_array).astype(int).tolist()
     image_solved_digits = displayNumbers(image_blank.copy(), solved_numbers, color=(0, 255, 0))
 
     pts2 = np.float32(biggest)
@@ -113,7 +113,7 @@ def solve_sudoku_image(image: np.ndarray) -> dict:
     arranged_images = imageArrangement(image_array, 1)
 
     return {
-        "digits": numbers,
+        "digits": numbers_array.tolist(),
         "solved": solved_numbers,
         "solutionImage": _encode_png(inv_perspective),
         "debugImage": _encode_png(arranged_images),
