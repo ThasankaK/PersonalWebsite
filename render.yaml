@@ -2,6 +2,7 @@ services:
   - type: web
     name: sudoku-solver-api
     runtime: python
+    pythonVersion: 3.11
     rootDir: backend
     startCommand: python main.py
     envVars:
