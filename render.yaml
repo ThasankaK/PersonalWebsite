@@ -4,7 +4,7 @@ services:
     runtime: python
     pythonVersion: 3.11
     rootDir: backend
-    startCommand: python main.py
+    startCommand: sh -c 'if [ -f main.py ]; then python main.py; else python backend/main.py; fi'
     envVars:
       - key: TF_ENABLE_ONEDNN_OPTS
         value: "0"
@@ -12,4 +12,4 @@ services:
         value: "2"
       - key: CUDA_VISIBLE_DEVICES
         value: ""
-    buildCommand: pip install -r requirements.txt
+    buildCommand: sh -c 'if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install -r backend/requirements.txt; fi'
