@@ -1,73 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-  :root{--font:IBM Plex Sans,system-ui,-apple-system,"Segoe UI",sans-serif;--ink:#111;--soft:#6d6d6d;--rule:#dcdcdc}
-  *{box-sizing:border-box}
-  body{margin:0 auto;padding:1.5rem;max-width:64rem;background:#fff;color:var(--ink);font-family:IBM Plex Sans,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5}
-  a{color:inherit}
-  h1{margin:2rem 0 .5rem;font-size:1.25rem}
-  .lede{color:var(--soft);max-width:46rem}
-  .back{font-size:.9rem;color:var(--soft)}
-  .controls{display:flex;gap:.6rem;align-items:center;margin:1rem 0}
-  button,.filebtn{padding:.4rem .8rem;border:1px solid #111;background:#fff;cursor:pointer}
-  .panes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.5rem}
-  canvas{display:block;width:100%;max-width:27rem;border:1px solid var(--rule);background:#fafafa}
-  .grid{display:grid;grid-template-columns:repeat(9,1fr);max-width:27rem;border:1px solid var(--rule)}
-  .status{margin:0 0 1rem;color:var(--soft)}
-  ol.steps{margin:0;padding-left:1.1rem;max-width:46rem;color:var(--soft)}
-  footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--soft)}
-  @media(max-width:840px){.grid{max-width:100%}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Sudoku Solver · Thasanka Kandage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="mx-auto max-w-[54rem] bg-white px-6 pb-20 font-['Instrument_Sans',Arial,sans-serif] text-[15px] leading-[1.6] text-[#111] [&_a]:underline [&_a:hover]:no-underline">
 
-<p><a class="back" href="index.html">← Thasanka Kandage</a></p>
+  <header class="pt-12">
+    <a class="text-[.88rem] text-[#666]" href="index.html">← Thasanka Kandage</a>
 
-<h1>AI Sudoku Solver</h1>
-<p class="lede">
-  Upload a photo of a Sudoku puzzle. It finds the grid, reads the digits with a CNN I trained, and
-  solves the rest by backtracking. <a href="https://github.com/ThasankaK/AISudokuSolver">Source</a>.
-</p>
+    <h1 class="mt-6 mb-[.6rem] text-[1.4rem] font-bold">AI Sudoku Solver</h1>
+    <p class="text-[#444]">
+      Upload a photo of a Sudoku puzzle. It finds the grid, reads the digits with a CNN I trained, and
+      solves the rest by backtracking.
+      <a href="https://github.com/ThasankaK/AISudokuSolver" target="_blank" rel="noopener noreferrer">Source</a>.
+    </p>
+  </header>
 
-<div class="controls">
-  <label class="filebtn">Choose an image<input id="file" type="file" accept="image/*"></label>
-  <button id="solve" disabled>Solve</button>
-  <button id="reset" disabled>Reset</button>
-</div>
+  <h2 class="mt-12 border-b-2 border-[#111] pb-[.4rem] text-[.8rem] font-bold tracking-[.16em] uppercase">Try it</h2>
 
-<p class="status" id="status">Choose a Sudoku image. Note that since I am using <a href="https://render.com/">Render</a>, it may take 1-2 minutes for my instance to spin up after inactivity.</p>
+  <div class="flex flex-wrap items-center gap-3 py-6">
+    <label class="cursor-pointer border border-[#111] px-3 py-1.5 hover:bg-[#fafafa] focus-within:outline-2 focus-within:outline-offset-2">
+      Choose an image
+      <input class="sr-only" id="file" type="file" accept="image/*">
+    </label>
+    <button class="cursor-pointer border border-[#111] px-3 py-1.5 enabled:hover:bg-[#fafafa] disabled:cursor-not-allowed disabled:opacity-40" id="solve" disabled>Solve</button>
+    <button class="cursor-pointer border border-[#111] px-3 py-1.5 enabled:hover:bg-[#fafafa] disabled:cursor-not-allowed disabled:opacity-40" id="reset" disabled>Reset</button>
+  </div>
 
-<div class="panes">
-  <figure>
-    <canvas id="cvsSource" width="450" height="450"></canvas>
-    <figcaption id="capSource">Your image.</figcaption>
-  </figure>
+  <p class="mb-6 text-[.88rem] text-[#666] [&.err]:text-red-700" id="status" role="status" aria-live="polite">
+    Choose a Sudoku image. Note that since I am using
+    <a href="https://render.com/" target="_blank" rel="noopener noreferrer">Render</a>,
+    it may take 1-2 minutes for my instance to spin up after inactivity.
+  </p>
 
-  <figure>
-    <canvas id="cvsWarp" width="450" height="450"></canvas>
-    <figcaption id="capGrid">
-      The solved puzzle.
-    </figcaption>
-  </figure>
-</div>
+  <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+    <figure>
+      <canvas class="block w-full border border-[#ddd] bg-[#fafafa]" id="cvsSource" width="450" height="450"></canvas>
+      <figcaption class="mt-2 text-[.82rem] text-[#666]" id="capSource">Your image.</figcaption>
+    </figure>
 
-<h2>How it works</h2>
-<ol class="steps">
-  <li>We clean the photo so the puzzle is easy to see.</li>
-  <li>Finds the puzzle border and straightens the grid.</li>
-  <li>Each cell is extracted and the digit (if any) is read by the model.</li>
-  <li>Low-confidence reads are treated as empty so mistakes don't break the solve.</li>
-  <li>The solver fills in the missing numbers and stops if the puzzle is invalid.</li>
-  <li>The completed numbers are drawn back onto your photo.</li>
-</ol>
+    <figure>
+      <canvas class="block w-full border border-[#ddd] bg-[#fafafa]" id="cvsWarp" width="450" height="450"></canvas>
+      <figcaption class="mt-2 text-[.82rem] text-[#666]" id="capGrid">The solved puzzle.</figcaption>
+    </figure>
+  </div>
 
-<footer>
-  <p>Thasanka Kandage · <a href="mailto:thasanka.kandage@gmail.com">thasanka.kandage@gmail.com</a></p>
-</footer>
+  <h2 class="mt-12 border-b-2 border-[#111] pb-[.4rem] text-[.8rem] font-bold tracking-[.16em] uppercase">How it works</h2>
+
+  <ol class="list-decimal space-y-[.45rem] py-6 pl-[1.1rem] text-[.92rem] text-[#444]">
+    <li>We clean the photo so the puzzle is easy to see.</li>
+    <li>Finds the puzzle border and straightens the grid.</li>
+    <li>Each cell is extracted and the digit (if any) is read by the model.</li>
+    <li>The solver fills in the missing numbers and stops if the puzzle is invalid.</li>
+    <li>The completed numbers are drawn back onto the photo.</li>
+  </ol>
 
 <script>
 const SIZE = 450;
@@ -166,23 +158,3 @@ els.solve.addEventListener("click", solveWithBackend);
 </script>
 </body>
 </html>
-
-<script>
-document.querySelectorAll('a[href]').forEach(a => {
-  try {
-    const href = a.getAttribute('href');
-    if (!href) return;
-    if (href.startsWith('mailto:')) {
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener noreferrer');
-      return;
-    }
-    const url = new URL(href, location.href);
-    if (url.hostname !== location.hostname) {
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener noreferrer');
-    }
-  } catch (e) {
-  }
-});
-</script>
