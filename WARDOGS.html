@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculate WARDOGS mortar range from map coordinates.">
+  <title>WARDOGS Mortar Range Calculator · Thasanka Kandage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { max-width: 850px; margin: 0 auto; padding: 0 24px 48px; color: #111; background: #fff; font: 15px/1.6 "Instrument Sans", Arial, sans-serif; }
+    a { color: inherit; }
+    header { padding: 32px 0 20px; border-bottom: 1px solid #ddd; }
+    header a { color: #555; font-size: .88rem; }
+    h1 { margin: 20px 0 4px; font-size: 1.5rem; line-height: 1.3; }
+    header p, .intro, .note { color: #555; }
+    header p { margin: 0; }
+    main { padding-top: 28px; }
+    .intro { margin: 0 0 24px; }
+    .positions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    fieldset { min-width: 0; margin: 0; padding: 16px; border: 1px solid #aaa; }
+    legend { padding: 0 6px; font-weight: 600; }
+    .paste { margin-bottom: 14px; }
+    .paste label, .coordinate label { display: block; margin-bottom: 5px; font-size: .82rem; }
+    .coordinate { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    input { width: 100%; min-height: 44px; padding: 9px 10px; border: 1px solid #888; border-radius: 2px; background: #fff; color: #111; font: 15px/1.4 Consolas, monospace; }
+    input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+    input:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+    input[aria-invalid="true"] { border-style: dashed; }
+    .error { min-height: 1.2em; margin: 6px 0 0; color: #111; font-size: .8rem; }
+    .result { margin-top: 28px; padding: 20px 22px; border: 1px solid #111; }
+    .result h2 { margin: 0; font-size: 1rem; font-weight: 500; }
+    .value { margin: 4px 0; font: 600 clamp(42px, 8vw, 64px)/1.2 Consolas, monospace; overflow-wrap: anywhere; }
+    .value span { font: 400 25px "Instrument Sans", Arial, sans-serif; }
+    .details { margin: 0; color: #555; font-size: .82rem; }
+    .bearing { display: flex; justify-content: space-between; gap: 16px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #ccc; font-size: .88rem; }
+    .bearing output { font-family: Consolas, monospace; }
+    .empty { margin: 16px 0 0; color: #555; }
+    .note { margin: 12px 0 0; font-size: .8rem; }
+    @media (max-width: 600px) {
+      body { padding: 0 16px 28px; }
+      header { padding-top: 22px; }
+      main { padding-top: 22px; }
+      .positions { grid-template-columns: 1fr; gap: 18px; }
+      .result { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>WARDOGS Mortar Range Calculator</h1>
+    <p>Calculate the straight-line range from your mortar to a map coordinate.</p>
+  </header>
+  <main>
+    <p class="intro">Type coordinates or paste a pair such as <code>x72.87, y105.10</code>.</p>
+    <div class="positions">
+      <fieldset>
+        <legend>Input mortar coordinate</legend>
+        <div class="paste"><label for="mortar-paste">Paste coordinates</label><input id="mortar-paste" type="text" placeholder="x72.87, y105.10" autocomplete="off" aria-label="Paste mortar coordinate pair"></div>
+        <p class="error" id="mortar-error" role="alert"></p>
+        <div class="coordinate">
+          <div><label for="mortar-x">X coordinate</label><input id="mortar-x" type="number" step="any" inputmode="decimal"></div>
+          <div><label for="mortar-y">Y coordinate</label><input id="mortar-y" type="number" step="any" inputmode="decimal"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Input target coordinate</legend>
+        <div class="paste"><label for="target-paste">Paste coordinates</label><input id="target-paste" type="text" placeholder="x69.21, y101.57" autocomplete="off" aria-label="Paste target coordinate pair"></div>
+        <p class="error" id="target-error" role="alert"></p>
+        <div class="coordinate">
+          <div><label for="target-x">X coordinate</label><input id="target-x" type="number" step="any" inputmode="decimal"></div>
+          <div><label for="target-y">Y coordinate</label><input id="target-y" type="number" step="any" inputmode="decimal"></div>
+        </div>
+      </fieldset>
+    </div>
+    <section class="result" aria-label="Calculated mortar range" aria-live="polite" aria-atomic="true">
+      <h2>Range to target</h2>
+      <p id="empty" class="empty">Enter both coordinates to calculate the range.</p>
+      <div id="answer" hidden>
+        <p class="value"><output id="range">—</output> <span>m</span></p>
+        <p class="details"><output id="units">—</output> coordinate units · 1 unit = 100 m</p>
+        <div class="bearing"><span>Direction to target</span><output id="bearing">—</output></div>
+      </div>
+    </section>
+    <p class="note">Distance is a straight line. Direction assumes X increases east and Y increases north.</p>
+  </main>
+  <script>
+    const fields = {
+      mortar: { x: document.getElementById("mortar-x"), y: document.getElementById("mortar-y") },
+      target: { x: document.getElementById("target-x"), y: document.getElementById("target-y") }
+    };
+    const pairPattern = /x\s*(-?\d+(?:\.\d+)?)\s*[,;\s]+y\s*(-?\d+(?:\.\d+)?)/i;
+    const fmt = (value, digits) => value.toLocaleString(undefined, { maximumFractionDigits: digits });
+
+    function applyPair(which, text) {
+      const match = text.trim().match(pairPattern);
+      const paste = document.getElementById(which + "-paste");
+      const error = document.getElementById(which + "-error");
+      if (!match) {
+        paste.setAttribute("aria-invalid", "true");
+        error.textContent = "Use this format: x72.87, y105.10";
+        return false;
+      }
+      fields[which].x.value = match[1];
+      fields[which].y.value = match[2];
+      paste.removeAttribute("aria-invalid");
+      error.textContent = "";
+      calculate();
+      return true;
+    }
+
+    function calculate() {
+      const values = Object.values(fields).flatMap(pair => [Number(pair.x.value), Number(pair.y.value)]);
+      const complete = Object.values(fields).every(pair => pair.x.value.trim() !== "" && pair.y.value.trim() !== "") && values.every(Number.isFinite);
+      document.getElementById("empty").hidden = complete;
+      document.getElementById("answer").hidden = !complete;
+      if (!complete) return;
+
+      const [mx, my, tx, ty] = values;
+      const dx = tx - mx;
+      const dy = ty - my;
+      const units = Math.hypot(dx, dy);
+      const metres = units * 100;
+      const bearing = units === 0 ? null : (Math.atan2(dx, dy) * 180 / Math.PI + 360) % 360;
+      document.getElementById("range").textContent = fmt(metres, 1);
+      document.getElementById("units").textContent = fmt(units, 3);
+      document.getElementById("bearing").textContent = bearing === null ? "Same position" : fmt(Math.round(bearing * 10) / 10, 1) + "°";
+    }
+
+    for (const [which, pair] of Object.entries(fields)) {
+      pair.x.addEventListener("input", calculate);
+      pair.y.addEventListener("input", calculate);
+      const paste = document.getElementById(which + "-paste");
+      paste.addEventListener("paste", event => {
+        const text = event.clipboardData.getData("text");
+        if (/^\s*x\s*/i.test(text)) {
+          event.preventDefault();
+          applyPair(which, text);
+        }
+      });
+      paste.addEventListener("keydown", event => {
+        if (event.key === "Enter" && applyPair(which, paste.value)) paste.value = "";
+      });
+      paste.addEventListener("blur", () => {
+        if (paste.value.trim() && applyPair(which, paste.value)) paste.value = "";
+      });
+    }
+  </script>
+</body>
+</html>
